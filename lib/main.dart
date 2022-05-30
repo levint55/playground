@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:playground/providers/auth.dart';
+import 'package:playground/providers/todoList.dart';
+import 'package:playground/screens/add_todo_list_screen.dart';
+import 'package:playground/screens/todo_list_detail_screen.dart';
 import 'package:playground/screens/auth_screen.dart';
 import 'package:playground/screens/home_screen.dart';
+import 'package:playground/screens/todo_list_screen..dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -23,8 +26,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<Auth>(
-          create: (context) => Auth(''),
+        ChangeNotifierProvider<TodoList>(
+          create: (context) => TodoList(null, null, []),
         )
       ],
       child: MaterialApp(
@@ -44,6 +47,13 @@ class MyApp extends StatelessWidget {
           },
           stream: FirebaseAuth.instance.authStateChanges(),
         ),
+        routes: {
+          AddTodoListScreen.routeName: (context) => const AddTodoListScreen(),
+          AuthScreen.routeName: (context) => const AuthScreen(),
+          TodoListScreen.routeName: (context) => const TodoListScreen(),
+          TodoListDetailScreen.routeName: (context) =>
+              const TodoListDetailScreen(),
+        },
       ),
     );
   }

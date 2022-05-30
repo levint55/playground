@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-class Todo with ChangeNotifier {
+class Todo {
   final String? _id;
   final String? _createdAt;
   final String? _authorId;

@@ -1,17 +1,27 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:playground/dummy_data.dart';
-import 'package:playground/providers/auth.dart';
+import 'package:playground/screens/add_todo_list_screen.dart';
 import 'package:playground/widgets/todo_slider.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const routeName = '/';
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+            shape: BoxShape.circle, color: Theme.of(context).primaryColor),
+        child: IconButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed(AddTodoListScreen.routeName);
+          },
+          icon: const Icon(Icons.add),
+          color: Colors.white,
+        ),
+      ),
       drawer: Drawer(
         child: ListView(
           children: [
@@ -20,14 +30,13 @@ class HomeScreen extends StatelessWidget {
               leading: const Icon(Icons.logout),
               onTap: () {
                 FirebaseAuth.instance.signOut();
-                Provider.of<Auth>(context, listen: false).logout();
               },
             )
           ],
         ),
       ),
       appBar: AppBar(title: const Text('Home')),
-      body: Center(
+      body: const Center(
         child: TodoSlider(),
       ),
     );
