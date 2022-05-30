@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:playground/providers/auth.dart';
+import 'package:provider/provider.dart';
 
 class AuthForm extends StatefulWidget {
   const AuthForm({Key? key}) : super(key: key);
@@ -39,6 +41,9 @@ class _AuthFormState extends State<AuthForm> {
             password: _userPassword ?? '',
           );
         }
+
+        Provider.of<Auth>(context, listen: false)
+            .setUserId(authResult.user?.uid);
       } catch (e) {
         // TODO: Add error handler
         print(e);

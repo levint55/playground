@@ -1,5 +1,10 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:playground/dummy_data.dart';
+import 'package:playground/providers/auth.dart';
+import 'package:playground/widgets/todo_slider.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,17 +16,20 @@ class HomeScreen extends StatelessWidget {
         child: ListView(
           children: [
             ListTile(
-              title: Text('Logout'),
-              leading: Icon(Icons.logout),
+              title: const Text('Logout'),
+              leading: const Icon(Icons.logout),
               onTap: () {
                 FirebaseAuth.instance.signOut();
+                Provider.of<Auth>(context, listen: false).logout();
               },
             )
           ],
         ),
       ),
-      appBar: AppBar(title: Text('Home')),
-      body: Container(),
+      appBar: AppBar(title: const Text('Home')),
+      body: Center(
+        child: TodoSlider(),
+      ),
     );
   }
 }
