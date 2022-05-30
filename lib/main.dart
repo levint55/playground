@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:playground/screens/auth_screen.dart';
+import 'package:playground/screens/home_screen.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -19,11 +21,21 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Playground',
-      home: Scaffold(
-          appBar: AppBar(
-            title: Text('Appbar Title'),
-          ),
-          body: AuthScreen()),
+      home: StreamBuilder(
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            // insert SplashScreen
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snapshot.hasData) {
+            return HomeScreen();
+          }
+          return const AuthScreen();
+        },
+        stream: FirebaseAuth.instance.authStateChanges(),
+      ),
     );
   }
 }
