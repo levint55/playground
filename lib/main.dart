@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:playground/providers/todoList.dart';
+import 'package:playground/providers/todosList.dart';
 import 'package:playground/screens/add_todo_list_screen.dart';
 import 'package:playground/screens/todo_list_detail_screen.dart';
 import 'package:playground/screens/auth_screen.dart';
@@ -28,6 +29,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider<TodoList>(
           create: (context) => TodoList(null, null, []),
+        ),
+        ChangeNotifierProvider<TodosList>(
+          create: (context) => TodosList([]),
         )
       ],
       child: MaterialApp(

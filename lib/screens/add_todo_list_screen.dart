@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:playground/providers/todosList.dart';
+import 'package:provider/provider.dart';
 
 class AddTodoListScreen extends StatefulWidget {
   static const routeName = '/add-todo-list';
@@ -24,7 +26,7 @@ class _AddTodoListScreenState extends State<AddTodoListScreen> {
     }
 
     if (isValid) {
-      //TODO: Add data
+      Provider.of<TodosList>(context, listen: false).addData(_title);
       Navigator.of(context).pop();
     }
   }

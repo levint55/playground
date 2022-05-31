@@ -6,7 +6,7 @@ import 'package:playground/providers/todo.dart';
 class TodoList with ChangeNotifier {
   final String? _id;
   final String? _title;
-  final List<Todo> _items;
+  List<Todo> _items;
 
   TodoList(this._id, this._title, this._items);
 
@@ -23,15 +23,22 @@ class TodoList with ChangeNotifier {
     return 0.5;
   }
 
-  void addData() async {
-    // try {
-    //     final user = FirebaseAuth.instance.currentUser;
-    //     final data = {'title': _title, 'createdAt': Timestamp.now()};
-    //     await FirebaseFirestore.instance
-    //         .collection('users/${user!.uid}/todos')
-    //         .add(data);
-    //   } catch (e) {
-    //     print(e);
-    //   }
+  void addData() async {}
+
+  Future fetchData() async {
+    final user = FirebaseAuth.instance.currentUser;
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users/${user!.uid}/todos/$_id/todo')
+        .get();
+
+    List<Todo> newItems = snapshot.docs.map((element) {
+      var data = element.data();
+      return Todo(
+          element.id, DateTime.now().toIso8601String(), user.uid, data['text']);
+    }).toList();
+
+    _items = newItems;
+
+    notifyListeners();
   }
 }

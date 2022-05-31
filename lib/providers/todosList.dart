@@ -4,16 +4,44 @@ import 'package:flutter/material.dart';
 import 'package:playground/providers/todoList.dart';
 
 class TodosList with ChangeNotifier {
-  final List<TodoList> _items;
+  List<TodoList> _items;
 
   TodosList(this._items);
 
-  void fetchData() async {
-    // final user = FirebaseAuth.instance.currentUser;
-    // final response = await FirebaseFirestore.instance
-    //     .collection('users/${user!.uid}/todos')
-    //     .get();
+  List<TodoList> get items {
+    return _items;
+  }
 
-    // var temp = [];
+  Future fetchData() async {
+    //TODO: error handling
+    final user = FirebaseAuth.instance.currentUser;
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users/${user!.uid}/todos')
+        .get();
+
+    List<TodoList> newItems = snapshot.docs.map((element) {
+      var data = element.data();
+      return TodoList(element.id, data['title'], []);
+    }).toList();
+
+    _items = newItems;
+
+    notifyListeners();
+  }
+
+  Future addData(String? title) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      final data = {'title': title};
+      final newData = await FirebaseFirestore.instance
+          .collection('users/${user!.uid}/todos')
+          .add(data);
+
+      _items.add(TodoList(newData.id, title, []));
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
   }
 }
