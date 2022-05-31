@@ -38,13 +38,14 @@ class TodoList with ChangeNotifier {
       final data = {
         'text': text,
         'createdAt': createdAt,
-        'authodId': user!.uid
+        'authodId': user!.uid,
+        'isCompleted': false
       };
       final newData = await FirebaseFirestore.instance
           .collection('users/${user.uid}/todos/$_id/todo')
           .add(data);
 
-      _items.add(Todo(newData.id, createdAt, user.uid, text));
+      _items.add(Todo(newData.id, createdAt, user.uid, text, false));
 
       notifyListeners();
     } catch (e) {
@@ -60,8 +61,8 @@ class TodoList with ChangeNotifier {
 
     List<Todo> newItems = snapshot.docs.map((element) {
       var data = element.data();
-      return Todo(
-          element.id, DateTime.now().toIso8601String(), user.uid, data['text']);
+      return Todo(element.id, DateTime.now().toIso8601String(), user.uid,
+          data['text'], data['isCompleted'] ?? false);
     }).toList();
 
     _items = newItems;

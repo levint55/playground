@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:playground/providers/todoList.dart';
 import 'package:playground/screens/add_todo_screen.dart';
+import 'package:playground/widgets/todo_list_widget.dart';
 import 'package:provider/provider.dart';
 
 class TodoListDetailScreen extends StatelessWidget {
@@ -11,7 +12,7 @@ class TodoListDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String? id = ModalRoute.of(context)!.settings.arguments as String?;
-    final todoList = Provider.of<TodoList>(context, listen: false).setId(id);
+    Provider.of<TodoList>(context, listen: false).setId(id);
 
     return Scaffold(
       appBar: AppBar(
@@ -31,18 +32,7 @@ class TodoListDetailScreen extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
-            return Consumer<TodoList>(
-                builder: (context, value, child) {
-                  return ListView.builder(
-                    itemCount: value.items.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(value.items[index].text!),
-                      );
-                    },
-                  );
-                },
-                child: Text('test'));
+            return TodoListWidget();
           },
           future: Provider.of<TodoList>(context, listen: false).fetchData()),
     );

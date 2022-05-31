@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:playground/providers/todo.dart';
 import 'package:playground/providers/todoList.dart';
 import 'package:playground/providers/todosList.dart';
 import 'package:playground/screens/add_todo_list_screen.dart';
@@ -8,7 +9,6 @@ import 'package:playground/screens/add_todo_screen.dart';
 import 'package:playground/screens/todo_list_detail_screen.dart';
 import 'package:playground/screens/auth_screen.dart';
 import 'package:playground/screens/home_screen.dart';
-import 'package:playground/screens/todo_list_screen..dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -33,6 +33,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<TodosList>(
           create: (context) => TodosList([]),
+        ),
+        ChangeNotifierProvider<Todo>(
+          create: (context) => Todo(null, null, null, null, false),
         )
       ],
       child: MaterialApp(
@@ -55,7 +58,6 @@ class MyApp extends StatelessWidget {
         routes: {
           AddTodoListScreen.routeName: (context) => const AddTodoListScreen(),
           AuthScreen.routeName: (context) => const AuthScreen(),
-          TodoListScreen.routeName: (context) => const TodoListScreen(),
           TodoListDetailScreen.routeName: (context) => TodoListDetailScreen(),
           AddTodoScreen.routeName: (context) => const AddTodoScreen(),
         },
