@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:playground/providers/todo.dart';
 
 class TodoList with ChangeNotifier {
-  final String? _id;
+  String? _id;
   final String? _title;
   List<Todo> _items;
 
@@ -18,12 +18,39 @@ class TodoList with ChangeNotifier {
     return _title;
   }
 
+  String? get id {
+    return _id;
+  }
+
+  void setId(String? id) {
+    _id = id;
+  }
+
   double getProgressValue() {
     //TODO: Add logic
     return 0.5;
   }
 
-  void addData() async {}
+  Future addData(String? text) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      final createdAt = DateTime.now().toIso8601String();
+      final data = {
+        'text': text,
+        'createdAt': createdAt,
+        'authodId': user!.uid
+      };
+      final newData = await FirebaseFirestore.instance
+          .collection('users/${user.uid}/todos/$_id/todo')
+          .add(data);
+
+      _items.add(Todo(newData.id, createdAt, user.uid, text));
+
+      notifyListeners();
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future fetchData() async {
     final user = FirebaseAuth.instance.currentUser;

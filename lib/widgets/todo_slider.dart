@@ -45,7 +45,8 @@ class _TodoSliderState extends State<TodoSlider> {
                             IconButton(
                                 onPressed: () {
                                   Navigator.of(context).pushNamed(
-                                      TodoListDetailScreen.routeName);
+                                      TodoListDetailScreen.routeName,
+                                      arguments: item.id);
                                 },
                                 icon: const Icon(Icons.edit))
                           ],

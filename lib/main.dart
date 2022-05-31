@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:playground/providers/todoList.dart';
 import 'package:playground/providers/todosList.dart';
 import 'package:playground/screens/add_todo_list_screen.dart';
+import 'package:playground/screens/add_todo_screen.dart';
 import 'package:playground/screens/todo_list_detail_screen.dart';
 import 'package:playground/screens/auth_screen.dart';
 import 'package:playground/screens/home_screen.dart';
@@ -55,8 +56,8 @@ class MyApp extends StatelessWidget {
           AddTodoListScreen.routeName: (context) => const AddTodoListScreen(),
           AuthScreen.routeName: (context) => const AuthScreen(),
           TodoListScreen.routeName: (context) => const TodoListScreen(),
-          TodoListDetailScreen.routeName: (context) =>
-              const TodoListDetailScreen(),
+          TodoListDetailScreen.routeName: (context) => TodoListDetailScreen(),
+          AddTodoScreen.routeName: (context) => const AddTodoScreen(),
         },
       ),
     );

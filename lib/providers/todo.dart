@@ -7,6 +7,10 @@ class Todo {
 
   Todo(this._id, this._createdAt, this._authorId, this._text);
 
+  String? get text {
+    return _text;
+  }
+
   void switchCompleted() {
     _isCompleted = !_isCompleted;
   }
