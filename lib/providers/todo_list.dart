@@ -53,6 +53,17 @@ class TodoList with ChangeNotifier {
     }
   }
 
+  Future deleteData(String id) async {
+    final user = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance
+        .collection('users/${user!.uid}/todos/$_id/todo')
+        .doc(id)
+        .delete();
+
+    _items.removeWhere((element) => element.id == id);
+    notifyListeners();
+  }
+
   Future fetchData() async {
     final user = FirebaseAuth.instance.currentUser;
     final snapshot = await FirebaseFirestore.instance
