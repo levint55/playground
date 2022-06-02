@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:playground/models/todo_form_arguments.dart';
 import 'package:playground/models/todo_list_arguments.dart';
 import 'package:playground/providers/todo_list.dart';
 import 'package:playground/screens/add_todo_screen.dart';
@@ -27,9 +28,12 @@ class TodoListDetailScreen extends StatelessWidget {
             IconButton(
               onPressed: () {
                 Navigator.of(context)
-                    .pushNamed(AddTodoScreen.routeName)
+                    .pushNamed(AddTodoScreen.routeName,
+                        arguments: TodoFormArguments(true, null))
                     .then((value) {
                   if (value != null) {
+                    // TODO: check isCreate, dan tentukan actionnya
+
                     Provider.of<TodoList>(context, listen: false)
                         .addData(value as String);
                   }

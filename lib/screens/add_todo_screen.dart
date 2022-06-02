@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:playground/models/todo_list_arguments.dart';
-import 'package:playground/providers/todo_list.dart';
-import 'package:playground/widgets/add_todo_form.dart';
-import 'package:provider/provider.dart';
+import 'package:playground/models/todo_form_arguments.dart';
+import 'package:playground/providers/todo.dart';
+import 'package:playground/widgets/todo_form.dart';
 
-class AddTodoScreen extends StatefulWidget {
+class AddTodoScreen extends StatelessWidget {
   static const routeName = '/add-todo';
   const AddTodoScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddTodoScreen> createState() => _AddTodoScreenState();
-}
-
-class _AddTodoScreenState extends State<AddTodoScreen> {
-  @override
   Widget build(BuildContext context) {
+    TodoFormArguments args =
+        ModalRoute.of(context)!.settings.arguments as TodoFormArguments;
+    bool isCreate = args.isCreate;
+    Todo? todo = args.todo;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Todo'),
+        title: isCreate ? Text('Add Todo') : Text('Edit Todo'),
       ),
       body: SingleChildScrollView(
-        child: AddTodoForm(),
+        child: TodoForm(isCreate: isCreate, todo: todo),
       ),
     );
   }

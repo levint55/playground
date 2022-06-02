@@ -1,15 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:playground/models/todo_form_parameter.dart';
+import 'package:playground/providers/todo.dart';
 
-class AddTodoForm extends StatefulWidget {
-  const AddTodoForm({Key? key}) : super(key: key);
+class TodoForm extends StatefulWidget {
+  final bool isCreate;
+  final Todo? todo;
+  const TodoForm({Key? key, required this.isCreate, this.todo})
+      : super(key: key);
 
   @override
-  State<AddTodoForm> createState() => _AddTodoFormState();
+  State<TodoForm> createState() => _TodoFormState();
 }
 
-class _AddTodoFormState extends State<AddTodoForm> {
+class _TodoFormState extends State<TodoForm> {
   final _formKey = GlobalKey<FormState>();
-  String? _text = '';
+  final TextEditingController controller = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      if (!widget.isCreate && widget.todo != null) {
+        controller.text = widget.todo!.text!;
+      } else {
+        controller.text = '';
+      }
+    });
+  }
 
   void trySubmit() {
     _formKey.currentState?.save();
@@ -20,7 +37,8 @@ class _AddTodoFormState extends State<AddTodoForm> {
       return;
     }
 
-    Navigator.of(context).pop(_text);
+    Navigator.of(context)
+        .pop(TodoFormParameter(controller.text, widget.todo, widget.isCreate));
   }
 
   @override
@@ -33,6 +51,7 @@ class _AddTodoFormState extends State<AddTodoForm> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextFormField(
+              controller: controller,
               decoration: const InputDecoration(label: Text('Text')),
               validator: (input) {
                 if (input == null) {
@@ -44,13 +63,15 @@ class _AddTodoFormState extends State<AddTodoForm> {
                 return null;
               },
               onSaved: (input) {
-                _text = input!.trim();
+                controller.text = input!.trim();
               },
             ),
             const SizedBox(
               height: 20,
             ),
-            ElevatedButton(onPressed: trySubmit, child: const Text('Add'))
+            ElevatedButton(
+                onPressed: trySubmit,
+                child: widget.isCreate ? Text('Add') : Text('Edit'))
           ],
         ),
       ),

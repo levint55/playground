@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:playground/models/todo_form_arguments.dart';
+import 'package:playground/models/todo_form_parameter.dart';
 import 'package:playground/providers/todo.dart';
 import 'package:playground/providers/todo_list.dart';
+import 'package:playground/screens/add_todo_screen.dart';
 import 'package:provider/provider.dart';
 
 class TodoListItemWidget extends StatefulWidget {
@@ -37,12 +40,35 @@ class _TodoListItemWidgetState extends State<TodoListItemWidget> {
           });
         },
       ),
-      trailing: IconButton(
-          onPressed: () {
-            Provider.of<TodoList>(context, listen: false)
-                .deleteData(widget.todo.id!);
-          },
-          icon: Icon(Icons.delete)),
+      trailing: SizedBox(
+        width: 100,
+        child: Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamed(AddTodoScreen.routeName,
+                        arguments: TodoFormArguments(false, widget.todo))
+                    .then((value) {
+                  TodoFormParameter data = value as TodoFormParameter;
+                  if (!data.isCreate && data.todo != null) {
+                    //TODO: Provider update todo
+                  }
+                  return;
+                });
+              },
+              icon: Icon(Icons.edit),
+            ),
+            IconButton(
+              onPressed: () {
+                Provider.of<TodoList>(context, listen: false)
+                    .deleteData(widget.todo.id!);
+              },
+              icon: Icon(Icons.delete),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
