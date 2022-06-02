@@ -17,6 +17,7 @@ class TodosList with ChangeNotifier {
     final user = FirebaseAuth.instance.currentUser;
     final snapshot = await FirebaseFirestore.instance
         .collection('users/${user!.uid}/todos')
+        .orderBy("createdAt", descending: false)
         .get();
 
     List<TodoList> newItems = snapshot.docs.map((element) {
@@ -32,7 +33,7 @@ class TodosList with ChangeNotifier {
   Future addData(String? title) async {
     try {
       final user = FirebaseAuth.instance.currentUser;
-      final data = {'title': title};
+      final data = {'title': title, 'createdAt': Timestamp.now()};
       final newData = await FirebaseFirestore.instance
           .collection('users/${user!.uid}/todos')
           .add(data);

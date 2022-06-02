@@ -5,14 +5,9 @@ import 'package:playground/providers/todos_list.dart';
 import 'package:playground/screens/todo_list_detail_screen.dart';
 import 'package:provider/provider.dart';
 
-class TodoSlider extends StatefulWidget {
+class TodoSlider extends StatelessWidget {
   const TodoSlider({Key? key}) : super(key: key);
 
-  @override
-  State<TodoSlider> createState() => _TodoSliderState();
-}
-
-class _TodoSliderState extends State<TodoSlider> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -25,49 +20,48 @@ class _TodoSliderState extends State<TodoSlider> {
         }
 
         return Consumer<TodosList>(
-          builder: (context, value, child) {
-            return CarouselSlider(
-              options: CarouselOptions(height: 300.0),
-              items: value.items.map((item) {
-                return Card(
-                  margin: const EdgeInsets.all(10),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(Icons.check)),
-                            IconButton(
-                                onPressed: () {
-                                  Navigator.of(context).pushNamed(
-                                      TodoListDetailScreen.routeName,
-                                      arguments: TodoListArguments(
-                                          item.id!, item.title!));
-                                },
-                                icon: const Icon(Icons.edit))
-                          ],
-                        ),
-                        const Divider(),
-                        Expanded(
-                          child: Center(child: Text(item.title!)),
-                        ),
-                        const Text('xx items'),
-                        const LinearProgressIndicator(
-                          value: 0.5,
-                        )
-                      ],
-                    ),
+          builder: (context, value, child) => CarouselSlider(
+            options:
+                CarouselOptions(height: 300.0, enableInfiniteScroll: false),
+            items: value.items.map((item) {
+              return Card(
+                key: ValueKey(item.id),
+                margin: const EdgeInsets.all(10),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                              onPressed: () {}, icon: const Icon(Icons.check)),
+                          IconButton(
+                              onPressed: () {
+                                Navigator.of(context).pushNamed(
+                                    TodoListDetailScreen.routeName,
+                                    arguments: TodoListArguments(
+                                        item.id!, item.title!));
+                              },
+                              icon: const Icon(Icons.edit))
+                        ],
+                      ),
+                      const Divider(),
+                      Expanded(
+                        child: Center(child: Text(item.title!)),
+                      ),
+                      const Text('xx items'),
+                      const LinearProgressIndicator(
+                        value: 0.5,
+                      )
+                    ],
                   ),
-                );
-              }).toList(),
-            );
-          },
+                ),
+              );
+            }).toList(),
+          ),
         );
       },
     );

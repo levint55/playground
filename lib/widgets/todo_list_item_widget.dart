@@ -3,43 +3,34 @@ import 'package:playground/providers/todo.dart';
 
 class TodoListItemWidget extends StatefulWidget {
   final Todo todo;
+  final String todoListId;
 
-  const TodoListItemWidget({Key? key, required this.todo}) : super(key: key);
+  const TodoListItemWidget(
+      {Key? key, required this.todo, required this.todoListId})
+      : super(key: key);
 
   @override
   State<TodoListItemWidget> createState() => _TodoListItemWidgetState();
 }
 
 class _TodoListItemWidgetState extends State<TodoListItemWidget> {
-  bool? _isCompleted;
-
-  @override
-  void initState() {
-    super.initState();
-    _isCompleted = widget.todo.isCompleted;
-  }
-
-  void switchCompleted(bool? newValue) {
-    setState(() {
-      _isCompleted = newValue;
-      widget.todo.switchCompleted();
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      key: ValueKey(widget.todo.id),
       title: Text(
         widget.todo.text!,
         style: TextStyle(
-            decoration: _isCompleted!
+            decoration: widget.todo.isCompleted
                 ? TextDecoration.lineThrough
                 : TextDecoration.none),
       ),
       leading: Checkbox(
-        value: _isCompleted,
+        value: widget.todo.isCompleted,
         onChanged: (newValue) {
-          switchCompleted(newValue);
+          setState(() {
+            widget.todo.switchCompleted(widget.todoListId);
+          });
         },
       ),
     );

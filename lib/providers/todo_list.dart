@@ -37,7 +37,7 @@ class TodoList with ChangeNotifier {
       final createdAt = DateTime.now().toIso8601String();
       final data = {
         'text': text,
-        'createdAt': createdAt,
+        'createdAt': Timestamp.now(),
         'authodId': user!.uid,
         'isCompleted': false
       };
@@ -57,6 +57,7 @@ class TodoList with ChangeNotifier {
     final user = FirebaseAuth.instance.currentUser;
     final snapshot = await FirebaseFirestore.instance
         .collection('users/${user!.uid}/todos/$_id/todo')
+        .orderBy("createdAt", descending: false)
         .get();
 
     List<Todo> newItems = snapshot.docs.map((element) {

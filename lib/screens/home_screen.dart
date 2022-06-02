@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:playground/providers/todos_list.dart';
 import 'package:playground/screens/add_todo_list_screen.dart';
 import 'package:playground/widgets/todo_slider.dart';
-import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   static const routeName = '/';
@@ -39,10 +37,7 @@ class HomeScreen extends StatelessWidget {
       ),
       appBar: AppBar(title: const Text('Home')),
       body: Center(
-        child: ChangeNotifierProvider<TodosList>(
-          create: (context) => TodosList([]),
-          child: const TodoSlider(),
-        ),
+        child: const TodoSlider(),
       ),
     );
   }

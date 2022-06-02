@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class Todo {
   final String? _id;
   final String? _createdAt;
@@ -28,16 +31,13 @@ class Todo {
     return _isCompleted;
   }
 
-  void switchCompleted() async {
+  void switchCompleted(String todoListId) async {
     _isCompleted = !_isCompleted;
-    // _isCompleted = !_isCompleted;
-    // final data = {'isCompleted': _isCompleted};
-    // final user = FirebaseAuth.instance.currentUser;
-    // final newData = await FirebaseFirestore.instance
-    //     .collection('users/${user!.uid}/todos/$_id/todo')
-    //     .doc(_id)
-    //     .set(data);
-
-    // notifyListeners();
+    final data = {'isCompleted': _isCompleted};
+    final user = FirebaseAuth.instance.currentUser;
+    final newData = await FirebaseFirestore.instance
+        .collection('users/${user!.uid}/todos/$todoListId/todo')
+        .doc(_id)
+        .update(data);
   }
 }
