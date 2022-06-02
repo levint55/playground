@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:playground/models/todo_list_arguments.dart';
+import 'package:playground/providers/todo_list.dart';
 import 'package:playground/providers/todos_list.dart';
 import 'package:playground/screens/todo_list_detail_screen.dart';
 import 'package:provider/provider.dart';
@@ -37,13 +38,23 @@ class TodoSlider extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
-                              onPressed: () {}, icon: const Icon(Icons.check)),
+                              onPressed: () {
+                                Provider.of<TodosList>(context, listen: false)
+                                    .markAsDone(item.id!);
+                              },
+                              icon: item.isDone!
+                                  ? Icon(Icons.check_circle)
+                                  : Icon(Icons.check)),
                           IconButton(
                               onPressed: () {
                                 Navigator.of(context).pushNamed(
-                                    TodoListDetailScreen.routeName,
-                                    arguments: TodoListArguments(
-                                        item.id!, item.title!));
+                                  TodoListDetailScreen.routeName,
+                                  arguments: TodoListArguments(
+                                    item.id!,
+                                    item.title!,
+                                    item.isDone!,
+                                  ),
+                                );
                               },
                               icon: const Icon(Icons.edit))
                         ],
@@ -52,9 +63,9 @@ class TodoSlider extends StatelessWidget {
                       Expanded(
                         child: Center(child: Text(item.title!)),
                       ),
-                      const Text('xx items'),
-                      const LinearProgressIndicator(
-                        value: 0.5,
+                      Text('${item.items.length} items'),
+                      LinearProgressIndicator(
+                        value: item.getProgressValue(),
                       )
                     ],
                   ),

@@ -7,8 +7,9 @@ class TodoList with ChangeNotifier {
   String? _id;
   final String? _title;
   List<Todo> _items;
+  bool? _isDone;
 
-  TodoList(this._id, this._title, this._items);
+  TodoList(this._id, this._title, this._items, this._isDone);
 
   List<Todo> get items {
     return _items;
@@ -22,13 +23,28 @@ class TodoList with ChangeNotifier {
     return _id;
   }
 
+  bool? get isDone {
+    return _isDone;
+  }
+
   void setId(String? id) {
     _id = id;
   }
 
+  void toogleIsDone() {
+    _isDone = !_isDone!;
+  }
+
   double getProgressValue() {
-    //TODO: Add logic
-    return 0.5;
+    if (_items.isEmpty) {
+      return 0;
+    }
+
+    int isCompletedCount =
+        _items.where((element) => element.isCompleted).toList().length;
+
+    double result = isCompletedCount / _items.length;
+    return result;
   }
 
   Future addData(String? text) async {

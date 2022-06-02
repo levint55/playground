@@ -16,9 +16,10 @@ class TodoListDetailScreen extends StatelessWidget {
         ModalRoute.of(context)!.settings.arguments as TodoListArguments;
     final String id = args.id;
     final String title = args.title;
+    final bool isDone = args.isDone;
 
     return ChangeNotifierProvider<TodoList>(
-      create: (context) => TodoList(id, title, []),
+      create: (context) => TodoList(id, title, [], isDone),
       builder: (context, child) => Scaffold(
         appBar: AppBar(
           title: Text(title),

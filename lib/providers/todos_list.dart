@@ -22,7 +22,7 @@ class TodosList with ChangeNotifier {
 
     List<TodoList> newItems = snapshot.docs.map((element) {
       var data = element.data();
-      return TodoList(element.id, data['title'], []);
+      return TodoList(element.id, data['title'], [], data['markAsDone']);
     }).toList();
 
     _items = newItems;
@@ -30,15 +30,32 @@ class TodosList with ChangeNotifier {
     notifyListeners();
   }
 
+  Future markAsDone(String id) async {
+    int existingElementIndex = _items.indexWhere((element) => element.id == id);
+    _items[existingElementIndex].toogleIsDone();
+    final user = FirebaseAuth.instance.currentUser;
+    final data = {'markAsDone': _items[existingElementIndex].isDone};
+    await FirebaseFirestore.instance
+        .collection('users/${user!.uid}/todos')
+        .doc(id)
+        .update(data);
+
+    notifyListeners();
+  }
+
   Future addData(String? title) async {
     try {
       final user = FirebaseAuth.instance.currentUser;
-      final data = {'title': title, 'createdAt': Timestamp.now()};
+      final data = {
+        'title': title,
+        'createdAt': Timestamp.now(),
+        'markAsDone': false
+      };
       final newData = await FirebaseFirestore.instance
           .collection('users/${user!.uid}/todos')
           .add(data);
 
-      _items.add(TodoList(newData.id, title, []));
+      _items.add(TodoList(newData.id, title, [], false));
 
       notifyListeners();
     } catch (e) {
