@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:playground/providers/todoList.dart';
+import 'package:playground/providers/todo_list.dart';
 
 class TodosList with ChangeNotifier {
   List<TodoList> _items;
@@ -41,7 +41,7 @@ class TodosList with ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print(e);
+      rethrow;
     }
   }
 }

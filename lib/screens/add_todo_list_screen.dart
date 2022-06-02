@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:playground/providers/todosList.dart';
+import 'package:playground/providers/todos_list.dart';
 import 'package:provider/provider.dart';
 
 class AddTodoListScreen extends StatefulWidget {

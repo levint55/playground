@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:playground/providers/todoList.dart';
+import 'package:playground/models/todo_list_arguments.dart';
+import 'package:playground/providers/todo_list.dart';
 import 'package:playground/screens/add_todo_screen.dart';
 import 'package:playground/widgets/todo_list_widget.dart';
 import 'package:provider/provider.dart';
@@ -7,12 +8,14 @@ import 'package:provider/provider.dart';
 class TodoListDetailScreen extends StatelessWidget {
   static const routeName = '/todos-detail';
 
-  TodoListDetailScreen({Key? key}) : super(key: key);
+  const TodoListDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String? id = ModalRoute.of(context)!.settings.arguments as String?;
-    Provider.of<TodoList>(context, listen: false).setId(id);
+    final args =
+        ModalRoute.of(context)!.settings.arguments as TodoListArguments;
+    final String id = args.id;
+    final String title = args.title;
 
     return Scaffold(
       appBar: AppBar(
@@ -22,19 +25,13 @@ class TodoListDetailScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed(AddTodoScreen.routeName);
               },
-              icon: Icon(Icons.add))
+              icon: const Icon(Icons.add))
         ],
       ),
-      body: FutureBuilder(
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            return TodoListWidget();
-          },
-          future: Provider.of<TodoList>(context, listen: false).fetchData()),
+      body: ChangeNotifierProvider<TodoList>(
+        create: (context) => TodoList(id, title, []),
+        child: const TodoListWidget(),
+      ),
     );
   }
 }

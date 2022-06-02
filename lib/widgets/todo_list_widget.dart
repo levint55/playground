@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:playground/providers/todoList.dart';
+import 'package:playground/providers/todo_list.dart';
 import 'package:playground/widgets/todo_list_item_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -8,18 +8,27 @@ class TodoListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TodoList>(
-      builder: (context, value, child) {
-        return ListView.builder(
-          itemCount: value.items.length,
-          itemBuilder: (context, index) {
-            return TodoListItemWidget(
-              title: value.items[index].text,
-              isCompleted: value.items[index].isCompleted,
+    return FutureBuilder(
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        return Consumer<TodoList>(
+          builder: (context, value, child) {
+            return ListView.builder(
+              itemCount: value.items.length,
+              itemBuilder: (context, index) {
+                return TodoListItemWidget(
+                  todo: value.items[index],
+                );
+              },
             );
           },
         );
       },
+      future: Provider.of<TodoList>(context, listen: false).fetchData(),
     );
   }
 }

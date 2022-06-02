@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:playground/providers/todoList.dart';
+import 'package:playground/providers/todo_list.dart';
 import 'package:provider/provider.dart';
 
 class AddTodoScreen extends StatefulWidget {
@@ -31,13 +31,13 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Todo'),
+        title: const Text('Add Todo'),
       ),
       body: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Container(
-            margin: EdgeInsets.all(20),
+            margin: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -56,10 +56,10 @@ class _AddTodoScreenState extends State<AddTodoScreen> {
                     _text = input!.trim();
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                ElevatedButton(onPressed: trySubmit, child: Text('Add'))
+                ElevatedButton(onPressed: trySubmit, child: const Text('Add'))
               ],
             ),
           ),

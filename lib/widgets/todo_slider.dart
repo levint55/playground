@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:playground/providers/todosList.dart';
+import 'package:playground/models/todo_list_arguments.dart';
+import 'package:playground/providers/todos_list.dart';
 import 'package:playground/screens/todo_list_detail_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class _TodoSliderState extends State<TodoSlider> {
       future: Provider.of<TodosList>(context, listen: false).fetchData(),
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
@@ -46,7 +47,8 @@ class _TodoSliderState extends State<TodoSlider> {
                                 onPressed: () {
                                   Navigator.of(context).pushNamed(
                                       TodoListDetailScreen.routeName,
-                                      arguments: item.id);
+                                      arguments: TodoListArguments(
+                                          item.id!, item.title!));
                                 },
                                 icon: const Icon(Icons.edit))
                           ],
@@ -55,8 +57,8 @@ class _TodoSliderState extends State<TodoSlider> {
                         Expanded(
                           child: Center(child: Text(item.title!)),
                         ),
-                        Text('xx items'),
-                        LinearProgressIndicator(
+                        const Text('xx items'),
+                        const LinearProgressIndicator(
                           value: 0.5,
                         )
                       ],
