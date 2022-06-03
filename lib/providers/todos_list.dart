@@ -12,13 +12,18 @@ class TodosList with ChangeNotifier {
     return _items;
   }
 
-  Future fetchData() async {
+  Future fetchData([bool isCompleted = false]) async {
     //TODO: error handling
     final user = FirebaseAuth.instance.currentUser;
-    final snapshot = await FirebaseFirestore.instance
+    var query = FirebaseFirestore.instance
         .collection('users/${user!.uid}/todos')
-        .orderBy("createdAt", descending: false)
-        .get();
+        .orderBy("createdAt", descending: false);
+
+    if (isCompleted) {
+      query = query.where('markAsDone', isEqualTo: true);
+    }
+
+    final snapshot = await query.get();
 
     List<TodoList> newItems = snapshot.docs.map((element) {
       var data = element.data();
@@ -49,7 +54,9 @@ class TodosList with ChangeNotifier {
       final data = {
         'title': title,
         'createdAt': Timestamp.now(),
-        'markAsDone': false
+        'markAsDone': false,
+        'length': 0,
+        'progress': 0,
       };
       final newData = await FirebaseFirestore.instance
           .collection('users/${user!.uid}/todos')

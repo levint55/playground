@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:playground/providers/todo.dart';
 import 'package:playground/providers/todo_list.dart';
+import 'package:playground/screens/add_todo_screen.dart';
 import 'package:provider/provider.dart';
 
 class TodoListItemWidget extends StatefulWidget {
   final Todo todo;
-  final String todoListId;
-
   const TodoListItemWidget({
     Key? key,
     required this.todo,
-    required this.todoListId,
   }) : super(key: key);
 
   @override
@@ -34,7 +32,7 @@ class _TodoListItemWidgetState extends State<TodoListItemWidget> {
         value: widget.todo.isCompleted,
         onChanged: (newValue) {
           setState(() {
-            widget.todo.switchCompleted(widget.todoListId);
+            widget.todo.switchCompleted(context);
           });
         },
       ),
@@ -43,15 +41,19 @@ class _TodoListItemWidgetState extends State<TodoListItemWidget> {
         child: Row(
           children: [
             IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.edit),
+              onPressed: () {
+                Provider.of<Todo>(context, listen: false).id = widget.todo.id;
+                Navigator.of(context)
+                    .pushNamed(AddTodoScreen.routeName, arguments: false);
+              },
+              icon: const Icon(Icons.edit),
             ),
             IconButton(
               onPressed: () {
                 Provider.of<TodoList>(context, listen: false)
                     .deleteData(widget.todo.id!);
               },
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
             ),
           ],
         ),

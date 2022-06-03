@@ -20,10 +20,7 @@ class TodoListWidget extends StatelessWidget {
           builder: (context, value, child) => ListView.builder(
             itemCount: value.items.length,
             itemBuilder: (context, index) {
-              return TodoListItemWidget(
-                todo: value.items[index],
-                todoListId: value.id!,
-              );
+              return TodoListItemWidget(todo: value.items[index]);
             },
           ),
         );

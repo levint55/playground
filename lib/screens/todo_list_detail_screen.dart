@@ -32,7 +32,8 @@ class _TodoListDetailScreenState extends State<TodoListDetailScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.of(context).pushNamed(AddTodoScreen.routeName);
+              Navigator.of(context)
+                  .pushNamed(AddTodoScreen.routeName, arguments: true);
             },
             icon: const Icon(Icons.add),
           )

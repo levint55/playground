@@ -8,12 +8,15 @@ class AddTodoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint('Render -> Add Todo Screen');
+    bool? isCreate =
+        ModalRoute.of(context)!.settings.arguments as bool? ?? true;
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Todo'),
+        title: isCreate ? const Text('Add Todo') : const Text('Edit Todo'),
       ),
       body: SingleChildScrollView(
-        child: TodoForm(),
+        child: TodoForm(isCreate: isCreate),
       ),
     );
   }

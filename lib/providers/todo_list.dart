@@ -4,39 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:playground/providers/todo.dart';
 
 class TodoList with ChangeNotifier {
-  String? _id;
-  String? _title;
+  String? id;
+  String? title;
   List<Todo> _items;
-  bool? _isDone;
+  bool? isDone;
 
-  TodoList(this._id, this._title, this._items, this._isDone);
+  TodoList(this.id, this.title, this._items, this.isDone);
 
   List<Todo> get items {
     return _items;
-  }
-
-  String? get title {
-    return _title;
-  }
-
-  String? get id {
-    return _id;
-  }
-
-  bool? get isDone {
-    return _isDone;
-  }
-
-  set id(String? id) {
-    _id = id;
-  }
-
-  set title(String? title) {
-    _title = title;
-  }
-
-  set isDone(bool? isDone) {
-    _isDone = isDone;
   }
 
   void setTodoList(String? id, String? title, bool? isDone) {
@@ -46,7 +22,7 @@ class TodoList with ChangeNotifier {
   }
 
   void toogleIsDone() {
-    _isDone = !_isDone!;
+    isDone = !isDone!;
   }
 
   double getProgressValue() {
@@ -72,7 +48,7 @@ class TodoList with ChangeNotifier {
         'isCompleted': false
       };
       final newData = await FirebaseFirestore.instance
-          .collection('users/${user.uid}/todos/$_id/todo')
+          .collection('users/${user.uid}/todos/$id/todo')
           .add(data);
 
       _items.add(Todo(newData.id, createdAt, user.uid, text, false));
@@ -86,7 +62,7 @@ class TodoList with ChangeNotifier {
   Future deleteData(String id) async {
     final user = FirebaseAuth.instance.currentUser;
     await FirebaseFirestore.instance
-        .collection('users/${user!.uid}/todos/$_id/todo')
+        .collection('users/${user!.uid}/todos/$id/todo')
         .doc(id)
         .delete();
 
@@ -97,7 +73,7 @@ class TodoList with ChangeNotifier {
   Future fetchData() async {
     final user = FirebaseAuth.instance.currentUser;
     final snapshot = await FirebaseFirestore.instance
-        .collection('users/${user!.uid}/todos/$_id/todo')
+        .collection('users/${user!.uid}/todos/$id/todo')
         .orderBy("createdAt", descending: false)
         .get();
 

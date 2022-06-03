@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<TodoList>(
             create: (context) => TodoList(null, null, [], null)),
         ChangeNotifierProvider<Todo>(
-            create: (context) => Todo(null, null, null, null, false))
+            create: (context) => Todo(null, null, null, null, false)),
       ],
       child: MaterialApp(
         title: 'Playground',

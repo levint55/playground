@@ -6,13 +6,15 @@ import 'package:playground/screens/todo_list_detail_screen.dart';
 import 'package:provider/provider.dart';
 
 class TodoSlider extends StatelessWidget {
-  const TodoSlider({Key? key}) : super(key: key);
+  final bool isCompleted;
+  const TodoSlider({Key? key, required this.isCompleted}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     debugPrint('Render -> Todo Slider');
     return FutureBuilder(
-      future: Provider.of<TodosList>(context, listen: false).fetchData(),
+      future:
+          Provider.of<TodosList>(context, listen: false).fetchData(isCompleted),
       builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -38,13 +40,16 @@ class TodoSlider extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           IconButton(
-                              onPressed: () {
-                                Provider.of<TodosList>(context, listen: false)
-                                    .markAsDone(item.id!);
-                              },
-                              icon: item.isDone!
-                                  ? Icon(Icons.check_circle)
-                                  : Icon(Icons.check)),
+                            onPressed: () {
+                              Provider.of<TodosList>(context, listen: false)
+                                  .markAsDone(item.id!);
+                              Provider.of<TodosList>(context, listen: false)
+                                  .fetchData(isCompleted);
+                            },
+                            icon: item.isDone!
+                                ? const Icon(Icons.check_circle)
+                                : const Icon(Icons.check),
+                          ),
                           IconButton(
                               onPressed: () {
                                 Provider.of<TodoList>(
