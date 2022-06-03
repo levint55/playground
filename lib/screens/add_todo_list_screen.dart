@@ -31,6 +31,7 @@ class _AddTodoListScreenState extends State<AddTodoListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Render -> Add Todo List Screen');
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Todo List'),

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:playground/models/todo_form_arguments.dart';
-import 'package:playground/models/todo_form_parameter.dart';
 import 'package:playground/providers/todo.dart';
 import 'package:playground/providers/todo_list.dart';
-import 'package:playground/screens/add_todo_screen.dart';
 import 'package:provider/provider.dart';
 
 class TodoListItemWidget extends StatefulWidget {
@@ -23,6 +20,7 @@ class TodoListItemWidget extends StatefulWidget {
 class _TodoListItemWidgetState extends State<TodoListItemWidget> {
   @override
   Widget build(BuildContext context) {
+    debugPrint('Render -> Todo List Item Widget');
     return ListTile(
       key: ValueKey(widget.todo.id),
       title: Text(
@@ -45,18 +43,7 @@ class _TodoListItemWidgetState extends State<TodoListItemWidget> {
         child: Row(
           children: [
             IconButton(
-              onPressed: () {
-                Navigator.of(context)
-                    .pushNamed(AddTodoScreen.routeName,
-                        arguments: TodoFormArguments(false, widget.todo))
-                    .then((value) {
-                  TodoFormParameter data = value as TodoFormParameter;
-                  if (!data.isCreate && data.todo != null) {
-                    //TODO: Provider update todo
-                  }
-                  return;
-                });
-              },
+              onPressed: () {},
               icon: Icon(Icons.edit),
             ),
             IconButton(

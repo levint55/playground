@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
-class Todo {
-  final String? _id;
+class Todo with ChangeNotifier {
+  String? _id;
   final String? _createdAt;
   final String? _authorId;
   final String? _text;
@@ -31,6 +32,10 @@ class Todo {
     return _isCompleted;
   }
 
+  set id(String? id) {
+    _id = id;
+  }
+
   void switchCompleted(String todoListId) async {
     _isCompleted = !_isCompleted;
     final data = {'isCompleted': _isCompleted};
@@ -39,5 +44,7 @@ class Todo {
         .collection('users/${user!.uid}/todos/$todoListId/todo')
         .doc(_id)
         .update(data);
+
+    notifyListeners();
   }
 }

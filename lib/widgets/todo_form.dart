@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:playground/models/todo_form_parameter.dart';
-import 'package:playground/providers/todo.dart';
+import 'package:playground/providers/todo_list.dart';
+import 'package:provider/provider.dart';
 
 class TodoForm extends StatefulWidget {
-  final bool isCreate;
-  final Todo? todo;
-  const TodoForm({Key? key, required this.isCreate, this.todo})
-      : super(key: key);
+  const TodoForm({Key? key}) : super(key: key);
 
   @override
   State<TodoForm> createState() => _TodoFormState();
@@ -16,33 +13,22 @@ class _TodoFormState extends State<TodoForm> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController controller = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      if (!widget.isCreate && widget.todo != null) {
-        controller.text = widget.todo!.text!;
-      } else {
-        controller.text = '';
-      }
-    });
-  }
-
   void trySubmit() {
     _formKey.currentState?.save();
     final isValid = _formKey.currentState?.validate();
-    FocusScope.of(context).unfocus();
 
     if (isValid == null || !isValid) {
       return;
     }
 
-    Navigator.of(context)
-        .pop(TodoFormParameter(controller.text, widget.todo, widget.isCreate));
+    Provider.of<TodoList>(context, listen: false).addData(controller.text);
+
+    Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Render -> Todo Form');
     return Form(
       key: _formKey,
       child: Container(
@@ -70,8 +56,9 @@ class _TodoFormState extends State<TodoForm> {
               height: 20,
             ),
             ElevatedButton(
-                onPressed: trySubmit,
-                child: widget.isCreate ? Text('Add') : Text('Edit'))
+              onPressed: trySubmit,
+              child: Text('Add'),
+            )
           ],
         ),
       ),

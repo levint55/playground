@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:playground/providers/todo.dart';
+import 'package:playground/providers/todo_list.dart';
 import 'package:playground/providers/todos_list.dart';
 import 'package:playground/screens/add_todo_list_screen.dart';
 import 'package:playground/screens/add_todo_screen.dart';
@@ -24,8 +26,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<TodosList>(
-      create: (context) => TodosList([]),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<TodosList>(create: (context) => TodosList([])),
+        ChangeNotifierProvider<TodoList>(
+            create: (context) => TodoList(null, null, [], null)),
+        ChangeNotifierProvider<Todo>(
+            create: (context) => Todo(null, null, null, null, false))
+      ],
       child: MaterialApp(
         title: 'Playground',
         home: StreamBuilder(

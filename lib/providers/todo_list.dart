@@ -5,7 +5,7 @@ import 'package:playground/providers/todo.dart';
 
 class TodoList with ChangeNotifier {
   String? _id;
-  final String? _title;
+  String? _title;
   List<Todo> _items;
   bool? _isDone;
 
@@ -27,8 +27,22 @@ class TodoList with ChangeNotifier {
     return _isDone;
   }
 
-  void setId(String? id) {
+  set id(String? id) {
     _id = id;
+  }
+
+  set title(String? title) {
+    _title = title;
+  }
+
+  set isDone(bool? isDone) {
+    _isDone = isDone;
+  }
+
+  void setTodoList(String? id, String? title, bool? isDone) {
+    this.id = id;
+    this.title = title;
+    this.isDone = isDone;
   }
 
   void toogleIsDone() {

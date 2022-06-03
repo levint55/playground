@@ -8,10 +8,11 @@ class TodoListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Render -> Todo List Widget');
     return FutureBuilder(
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          const Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }

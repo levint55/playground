@@ -1,6 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:playground/models/todo_list_arguments.dart';
 import 'package:playground/providers/todo_list.dart';
 import 'package:playground/providers/todos_list.dart';
 import 'package:playground/screens/todo_list_detail_screen.dart';
@@ -11,6 +10,7 @@ class TodoSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Render -> Todo Slider');
     return FutureBuilder(
       future: Provider.of<TodosList>(context, listen: false).fetchData(),
       builder: (context, AsyncSnapshot snapshot) {
@@ -47,13 +47,16 @@ class TodoSlider extends StatelessWidget {
                                   : Icon(Icons.check)),
                           IconButton(
                               onPressed: () {
+                                Provider.of<TodoList>(
+                                  context,
+                                  listen: false,
+                                ).setTodoList(
+                                  item.id,
+                                  item.title,
+                                  item.isDone,
+                                );
                                 Navigator.of(context).pushNamed(
                                   TodoListDetailScreen.routeName,
-                                  arguments: TodoListArguments(
-                                    item.id!,
-                                    item.title!,
-                                    item.isDone!,
-                                  ),
                                 );
                               },
                               icon: const Icon(Icons.edit))
