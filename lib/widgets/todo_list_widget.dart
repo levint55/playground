@@ -17,12 +17,16 @@ class TodoListWidget extends StatelessWidget {
           );
         }
         return Consumer<TodoList>(
-          builder: (context, value, child) => ListView.builder(
-            itemCount: value.items.length,
-            itemBuilder: (context, index) {
-              return TodoListItemWidget(todo: value.items[index]);
-            },
-          ),
+          builder: (context, value, child) => value.items.isEmpty
+              ? const Center(
+                  child: Text('No Todos!'),
+                )
+              : ListView.builder(
+                  itemCount: value.items.length,
+                  itemBuilder: (context, index) {
+                    return TodoListItemWidget(todo: value.items[index]);
+                  },
+                ),
         );
       },
       future: Provider.of<TodoList>(context, listen: false).fetchData(),

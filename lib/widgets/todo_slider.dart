@@ -23,64 +23,70 @@ class TodoSlider extends StatelessWidget {
         }
 
         return Consumer<TodosList>(
-          builder: (context, value, child) => CarouselSlider(
-            options:
-                CarouselOptions(height: 300.0, enableInfiniteScroll: false),
-            items: value.items.map((item) {
-              return Card(
-                key: ValueKey(item.id),
-                margin: const EdgeInsets.all(10),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Provider.of<TodosList>(context, listen: false)
-                                  .markAsDone(item.id!);
-                              Provider.of<TodosList>(context, listen: false)
-                                  .fetchData(isCompleted);
-                            },
-                            icon: item.isDone!
-                                ? const Icon(Icons.check_circle)
-                                : const Icon(Icons.check),
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                Provider.of<TodoList>(
-                                  context,
-                                  listen: false,
-                                ).setTodoList(
-                                  item.id,
-                                  item.title,
-                                  item.isDone,
-                                );
-                                Navigator.of(context).pushNamed(
-                                  TodoListDetailScreen.routeName,
-                                );
-                              },
-                              icon: const Icon(Icons.edit))
-                        ],
+          builder: (context, value, child) => value.items.isEmpty
+              ? const Center(
+                  child: Text('There is no data'),
+                )
+              : CarouselSlider(
+                  options: CarouselOptions(
+                      height: 300.0, enableInfiniteScroll: false),
+                  items: value.items.map((item) {
+                    return Card(
+                      key: ValueKey(item.id),
+                      margin: const EdgeInsets.all(10),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Provider.of<TodosList>(context,
+                                            listen: false)
+                                        .markAsDone(item.id!);
+                                    Provider.of<TodosList>(context,
+                                            listen: false)
+                                        .fetchData(isCompleted);
+                                  },
+                                  icon: item.isDone!
+                                      ? const Icon(Icons.check_circle)
+                                      : const Icon(Icons.check),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      Provider.of<TodoList>(
+                                        context,
+                                        listen: false,
+                                      ).setTodoList(
+                                        item.id,
+                                        item.title,
+                                        item.isDone,
+                                      );
+                                      Navigator.of(context).pushNamed(
+                                        TodoListDetailScreen.routeName,
+                                      );
+                                    },
+                                    icon: const Icon(Icons.edit))
+                              ],
+                            ),
+                            const Divider(),
+                            Expanded(
+                              child: Center(child: Text(item.title!)),
+                            ),
+                            Text('${item.items.length} items'),
+                            LinearProgressIndicator(
+                              value: item.getProgressValue(),
+                            )
+                          ],
+                        ),
                       ),
-                      const Divider(),
-                      Expanded(
-                        child: Center(child: Text(item.title!)),
-                      ),
-                      Text('${item.items.length} items'),
-                      LinearProgressIndicator(
-                        value: item.getProgressValue(),
-                      )
-                    ],
-                  ),
+                    );
+                  }).toList(),
                 ),
-              );
-            }).toList(),
-          ),
         );
       },
     );
